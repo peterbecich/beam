@@ -3,6 +3,7 @@ module Main where
 
 import Database.Beam.Migrate (stepNames, migrateScript)
 import Database.Beam.Migrate.Simple (backendMigrationStepsScript)
+import Database.Beam.Postgres.Syntax (pgRenderSyntaxScript, fromPgCommand)
 import Data.Text (unpack)
 import Pagila.Schema (migration)
 
@@ -13,4 +14,4 @@ main = do
   putStrLn "---------"
   putStrLn "Migration script:"
   -- migrateScript () (\x -> ) migration
-  putStrLn $ backendMigrationStepsScript _ migration
+  putStrLn $ backendMigrationStepsScript (\pg -> (show . pgRenderSyntaxScript $ (fromPgCommand pg))) migration
